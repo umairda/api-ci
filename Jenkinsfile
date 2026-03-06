@@ -43,6 +43,8 @@ void runStage(String envName, String manifestPath) {
 
   sh 'cp /root/.kube/config /tmp/kubeconfig'
   sh "sed -i 's#https://127.0.0.1:#https://host.docker.internal:#g' /tmp/kubeconfig"
+  sh "kubectl --kubeconfig=/tmp/kubeconfig config set-cluster kind-jenkins-kube --insecure-skip-tls-verify=true >/dev/null"
+  sh "kubectl --kubeconfig=/tmp/kubeconfig config unset clusters.kind-jenkins-kube.certificate-authority-data >/dev/null || true"
   sh "kubectl --kubeconfig=/tmp/kubeconfig config use-context ${params.K8S_CONTEXT}"
   sh 'make clean'
   sh 'make all'
