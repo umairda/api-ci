@@ -9,7 +9,7 @@ ifneq ($(shell pkg-config --exists gtest && echo yes),)
 GTEST_CFLAGS := $(shell pkg-config --cflags gtest)
 GTEST_LIBS := $(shell pkg-config --libs gtest)
 CXXFLAGS += $(GTEST_CFLAGS)
-TEST_LIBS := $(GTEST_LIBS) -lpthread
+TEST_LIBS := $(GTEST_LIBS) -lgtest_main -lpthread
 endif
 endif
 
