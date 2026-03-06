@@ -41,7 +41,8 @@ pipeline {
 void runStage(String envName, String manifestPath) {
   echo "Running ${envName} stage"
 
-  sh "kubectl config use-context ${params.K8S_CONTEXT}"
+  sh 'cp /root/.kube/config /tmp/kubeconfig'
+  sh "kubectl --kubeconfig=/tmp/kubeconfig config use-context ${params.K8S_CONTEXT}"
   sh 'make clean'
   sh 'make all'
   sh 'make test'
@@ -50,6 +51,6 @@ void runStage(String envName, String manifestPath) {
   sh "docker build -t ${IMAGE_REPO}:${envName}-${IMAGE_TAG} ."
   sh "docker push ${IMAGE_REPO}:${envName}-${IMAGE_TAG}"
 
-  sh "sed 's|REPLACE_IMAGE|${IMAGE_REPO}:${envName}-${IMAGE_TAG}|g' ${manifestPath} | kubectl apply -f -"
-  sh "kubectl rollout status deployment/health-api -n health-${envName} --timeout=120s"
+  sh "sed 's|REPLACE_IMAGE|${IMAGE_REPO}:${envName}-${IMAGE_TAG}|g' ${manifestPath} | kubectl --kubeconfig=/tmp/kubeconfig apply -f -"
+  sh "kubectl --kubeconfig=/tmp/kubeconfig rollout status deployment/health-api -n health-${envName} --timeout=120s"
 }
