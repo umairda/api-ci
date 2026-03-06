@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-make coverage
+coverage_output="$(make coverage 2>&1)"
+echo "$coverage_output"
 
-if [[ ! -f health_api.cpp.gcov ]]; then
-  echo "gcov output file not found."
-  exit 1
-fi
+coverage_line="$(echo "$coverage_output" | grep -E '^Lines executed:' | tail -n 1 || true)"
 
-coverage_line=$(grep -E "^Lines executed:" health_api.cpp.gcov || true)
 if [[ -z "$coverage_line" ]]; then
   echo "Could not parse coverage output."
   exit 1
