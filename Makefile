@@ -57,7 +57,7 @@ coverage: clean
 	mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) $(COVERAGE_FLAGS) $(LIB_SRC) $(TEST_SRC) -o $(TEST_BIN) $(TEST_LIBS)
 	./$(TEST_BIN)
-	gcov -o $(BUILD_DIR) src/health_api.cpp
+	gcov $(BUILD_DIR)/health_api_tests-health_api.gcno
 
 docker-build:
 	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) .
