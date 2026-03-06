@@ -42,6 +42,7 @@ void runStage(String envName, String manifestPath) {
   echo "Running ${envName} stage"
 
   sh 'cp /root/.kube/config /tmp/kubeconfig'
+  sh "sed -i 's#https://127.0.0.1:#https://host.docker.internal:#g' /tmp/kubeconfig"
   sh "kubectl --kubeconfig=/tmp/kubeconfig config use-context ${params.K8S_CONTEXT}"
   sh 'make clean'
   sh 'make all'
