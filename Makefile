@@ -35,6 +35,7 @@ TEST_SRC := tests/test_health_api.cpp
 
 .PHONY: all clean run test coverage docker-build docker-run docker-test docker-stop
 .PHONY: local-ci-up local-ci-down local-ci-password
+.PHONY: jenkins-agent-up jenkins-agent-down
 
 all: $(APP)
 
@@ -79,6 +80,12 @@ local-ci-down:
 
 local-ci-password:
 	docker exec local-jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+
+jenkins-agent-up:
+	./scripts/jenkins_agent_up.sh
+
+jenkins-agent-down:
+	./scripts/jenkins_agent_down.sh
 
 clean:
 	rm -rf $(BUILD_DIR) *.gcda *.gcno *.gcov src/*.gcda src/*.gcno src/*.gcov tests/*.gcda tests/*.gcno tests/*.gcov

@@ -8,6 +8,9 @@ KIND_NODE_IMAGE="${KIND_NODE_IMAGE:-kindest/node:v1.30.8}"
 JENKINS_NAME="${JENKINS_NAME:-local-jenkins}"
 JENKINS_HTTP_PORT="${JENKINS_HTTP_PORT:-8081}"
 JENKINS_AGENT_PORT="${JENKINS_AGENT_PORT:-50000}"
+# TODO(prod-hardening): Remove local file:// checkout allowance before shared/prod use.
+# Local lab convenience only: allows Jenkins Git plugin to clone file:// repos.
+# Do not use this in shared or production Jenkins environments.
 JENKINS_JAVA_OPTS="${JENKINS_JAVA_OPTS:--Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true}"
 WORKSPACE_DIR="${WORKSPACE_DIR:-$(pwd)}"
 KUBECONFIG_PATH="${KUBECONFIG_PATH:-$HOME/.kube/config}"

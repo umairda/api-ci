@@ -86,10 +86,32 @@ Get Jenkins admin password:
 make local-ci-password
 ```
 
+Set up a dedicated Jenkins agent (recommended):
+
+1. In Jenkins UI:
+   - `Manage Jenkins` -> `Nodes` -> `New Node`
+   - Name: `local-agent`
+   - Type: `Permanent Agent`
+   - Remote root directory: `/home/jenkins/agent`
+   - Labels: `local-agent`
+   - Launch method: `Launch agent by connecting it to the controller`
+   - Save and copy the generated secret from the node page
+2. Start agent container from this repo:
+   ```bash
+   JENKINS_SECRET=<copied-secret> make jenkins-agent-up
+   ```
+3. Pipeline now runs on this agent label (`local-agent`) instead of the Jenkins controller.
+
 Stop and remove everything:
 
 ```bash
 make local-ci-down
+```
+
+Stop agent only:
+
+```bash
+make jenkins-agent-down
 ```
 
 If `make local-ci-up` fails with a kind kubelet/control-plane timeout:
